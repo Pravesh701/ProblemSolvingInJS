@@ -10,7 +10,7 @@ let asia = {
 				}
 			},
 			bihar: {
-				district:{
+				district: {
 					d1: "Patna",
 					d2: "baliya"
 				}
@@ -27,13 +27,13 @@ let output = {
 
 }
 
-makeOutput =(pacific, parent)=> {
-	for(let key in pacific){
-		if(typeof pacific[key] === "object"){
-			makeOutput(pacific[key], parent+"_"+key);
+const makeOutput = (pacific, parent) => {
+	for (let key in pacific) {
+		if (typeof pacific[key] === "object") {
+			makeOutput(pacific[key], parent + "_" + key);
 		}
-		else{
-			output[parent+"_"+key] = pacific[key];
+		else {
+			output[parent + "_" + key] = pacific[key];
 		}
 	}
 }
