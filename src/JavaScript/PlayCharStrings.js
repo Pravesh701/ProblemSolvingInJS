@@ -1,4 +1,3 @@
-export const TestJS = (params) => { }
 var input = 'hiokkkMY'
 console.log(input.split('').map(val => {
     let chareCode = val.charCodeAt()
