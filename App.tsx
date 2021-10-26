@@ -1,39 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
+  TextInput,
+  TouchableOpacity,
+  FlatList
 } from 'react-native';
 
-import {
-  Colors,
-  Header,
-} from 'react-native/Libraries/NewAppScreen';
-import { TestJS } from './src/JavaScript/Test';
-
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [inputValue, setInputValue] = useState<string>('')
+  const [data, setData] = useState<Array<string>>([])
 
-  useEffect(() => {
-    TestJS()
-  }, [true])
+  const onChangeText = (value: string) => {
+    setInputValue(value)
+  }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const onPressClick = () => {
+    setData([...data, inputValue])
+  }
+
+  const renderClickedData = ({ item, index }: any) => {
+    return (
+      <View>
+        <Text>{item}</Text>
+      </View>
+    )
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-      </ScrollView>
+    <SafeAreaView style={styles.mainContainer}>
+      <TextInput
+        value={inputValue}
+        onChangeText={onChangeText}
+        style={styles.inputStyle}
+      />
+      <TouchableOpacity onPress={onPressClick} style={styles.clickButton}>
+        <Text style={styles.buttonText}>Click Me</Text>
+      </TouchableOpacity>
+      <FlatList
+        data={data}
+        keyExtractor={(item: any, index: number) => index.toString()}
+        renderItem={renderClickedData}
+      />
     </SafeAreaView>
   );
 };
@@ -42,6 +52,15 @@ const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
+  },
+  mainContainer: {
+    flex: 1,
+    paddingHorizontal: 16
+  },
+  backgroundStyle: {
+    backgroundColor: 'white',
+    flex: 1,
+    paddingHorizontal: 16
   },
   sectionTitle: {
     fontSize: 24,
@@ -55,6 +74,31 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  inputStyle: {
+    height: 50,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    fontSize: 16,
+    color: 'black',
+    fontWeight: '400',
+    paddingHorizontal: 16,
+    marginTop: 100,
+    borderColor: 'gray',
+    borderWidth: 2
+  },
+  clickButton: {
+    height: 50,
+    backgroundColor: 'blue',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    borderRadius: 5
+  },
+  buttonText: {
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '400',
+  }
 });
 
 export default App;
