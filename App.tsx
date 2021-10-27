@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,44 +9,51 @@ import {
   FlatList
 } from 'react-native';
 
-const App = () => {
-  const [inputValue, setInputValue] = useState<string>('')
-  const [data, setData] = useState<Array<string>>([])
-
-  const onChangeText = (value: string) => {
-    setInputValue(value)
+const themes = {
+  light: {
+    foreground: "#000000",
+    background: "#eeeeee"
+  },
+  dark: {
+    foreground: "#ffffff",
+    background: "#222222"
   }
-
-  const onPressClick = () => {
-    setData([...data, inputValue])
-  }
-
-  const renderClickedData = ({ item, index }: any) => {
-    return (
-      <View>
-        <Text>{item}</Text>
-      </View>
-    )
-  }
-
-  return (
-    <SafeAreaView style={styles.mainContainer}>
-      <TextInput
-        value={inputValue}
-        onChangeText={onChangeText}
-        style={styles.inputStyle}
-      />
-      <TouchableOpacity onPress={onPressClick} style={styles.clickButton}>
-        <Text style={styles.buttonText}>Click Me</Text>
-      </TouchableOpacity>
-      <FlatList
-        data={data}
-        keyExtractor={(item: any, index: number) => index.toString()}
-        renderItem={renderClickedData}
-      />
-    </SafeAreaView>
-  );
 };
+
+const ThemeContext = React.createContext(themes.light);
+
+function App() {
+  return (
+    <ThemeContext.Provider value={themes.light}>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar(props: any) {
+  return (
+    <View>
+      <ThemedButton />
+    </View>
+  );
+}
+
+function ThemedButton() {
+  return (
+    <ThemeContext.Consumer>
+      {({ background, foreground }: any) => {
+        console.log('ThemeContext.Consumer',);
+        return (
+          <TouchableOpacity style={{ backgroundColor: background }}>
+            <Text style={[styles.buttonText, { color: foreground }]}>
+              I am styled by theme context!
+            </Text>
+          </TouchableOpacity>
+        )
+      }}
+    </ThemeContext.Consumer>
+  );
+}
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -98,6 +105,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     fontWeight: '400',
+    marginTop: 100,
+    marginHorizontal: 16
   }
 });
 
