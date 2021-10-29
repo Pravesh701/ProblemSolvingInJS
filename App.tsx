@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { TestJS } from './src/JavaScript/Test'
 
 interface Props {
 
 }
 
 const App = (props: Props) => {
+  useEffect(() => {
+    TestJS()
+  }, [])
   return (
     <View style={styles.container}>
       <Text>App</Text>
