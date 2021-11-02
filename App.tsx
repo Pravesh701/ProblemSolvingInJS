@@ -1,23 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { PureComponent } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TestJS } from './src/JavaScript/Test'
-
 interface Props {
 
 }
+interface State {
 
-const App = (props: Props) => {
-  useEffect(() => {
+}
+
+class App extends PureComponent<Props, State> {
+  componentDidMount() {
     TestJS()
-  }, [])
-  return (
-    <View style={styles.container}>
-      <Text>App</Text>
-    </View>
-  )
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>App</Text>
+      </View>
+    )
+  }
 }
 
 export default App;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
